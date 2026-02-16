@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="index.min.css">
+	<title>Production-Ready Checklist</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			max-width: 1400px;
+			margin: 0 auto;
+		}
+
+		header {
+			border-bottom: 2px solid var(--dark);
+			padding: 1rem;
+		}
+
+		h1 {
+			font-size: 2rem;
+			color: var(--dark);
+		}
+
+		.subtitle {
+			font-size: 1rem;
+			color: var(--grey);
+		}
+
+		.controls {
+			padding: 1rem;
+			display: flex;
+			gap: 1rem;
+			justify-content: space-evenly;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		.controls button {
+			background: var(--dark);
+			color: white;
+			border: none;
+			padding: 0.5rem 1rem;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 14px;
+		}
+
+		.controls button:hover {
+			opacity: 0.9;
+		}
+
+		.controls label {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			cursor: pointer;
+		}
+
+		main {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+			gap: 1rem;
+			margin: 0 auto;
+			padding: 1rem;
+		}
+
+		.card {
+			border: none;
+			overflow: hidden;
+			break-inside: avoid;
+		}
+
+		.card.hidden {
+			display: none;
+		}
+
+		.card summary {
+			background: var(--dark);
+			color: white;
+			padding: 1rem;
+			cursor: pointer;
+			font-weight: bold;
+			font-size: 1rem;
+		}
+
+		.card-toggle {
+			background: var(--grey);
+			border: 1px solid white;
+			padding: 0.25rem 0.5rem;
+			cursor: pointer;
+		}
+
+		.card-toggle:hover {
+			background: rgba(255,255,255,0.3);
+		}
+
+		fieldset {
+			border-color: var(--lgrey);
+			margin: 1rem;
+			padding: 1rem;
+		}
+
+		legend {
+			font-weight: bold;
+			padding: 0 0.5rem;
+		}
+
+		label {
+			display: block;
+			padding: 0.5rem 0;
+			cursor: pointer;
+		}
+
+		label:hover {
+			background: var(--lgrey);
+		}
+
+		input[type="checkbox"] {
+			accent-color: var(--grey);
+			margin-right: 0.5rem;
+			cursor: pointer;
+		}
+
+		/* Print styles */
+		@media print {
+			* {
+				-webkit-print-color-adjust: exact;
+				print-color-adjust: exact;
+			}
+
+			body {
+				padding: 0;
+				font-size: 10px;
+				max-width: 100%;
+			}
+
+			.controls,
+			.card-toggle,
+			header {
+				display: none !important;
+			}
+
+			.card.hidden {
+				display: none !important;
+			}
+
+			main {
+				display: block;
+				columns: 2;
+				column-gap: 1.5rem;
+				padding: 0;
+			}
+
+			.card {
+				break-inside: avoid;
+				page-break-inside: avoid;
+				margin-bottom: 0.8rem;
+				border: 2px solid #000;
+				border-radius: 4px;
+				overflow: hidden;
+			}
+
+			.card summary {
+				background: #000 !important;
+				color: white !important;
+				padding: 0.5rem !important;
+				font-weight: bold;
+				font-size: 11px;
+				display: block;
+			}
+
+			.card summary::after,
+			.card summary::marker {
+				display: none !important;
+			}
+
+			.card summary span {
+				display: block;
+			}
+
+			fieldset {
+				margin: 0.5rem;
+				padding: 0.4rem;
+				border: 1px solid #ccc;
+				border-radius: 2px;
+				page-break-inside: avoid;
+				break-inside: avoid;
+			}
+
+			legend {
+				font-weight: bold;
+				font-size: 10px;
+				padding: 0 0.25rem;
+			}
+
+			label {
+				padding: 0.15rem 0;
+				display: block;
+				font-size: 9px;
+				line-height: 1.4;
+			}
+
+			input[type="checkbox"] {
+				margin-right: 0.3rem;
+				transform: scale(0.85);
+			}
+
+			strong {
+				font-weight: bold;
+			}
+
+			/* Print title at top of page */
+			@page {
+				margin: 0.5in;
+			}
+
+			/* Add title to first page */
+			body::before {
+				content: "Production-Ready Feature Checklist";
+				display: block;
+				font-size: 18px;
+				font-weight: bold;
+				text-align: center;
+				margin-bottom: 1rem;
+				padding-bottom: 0.5rem;
+				border-bottom: 3px solid #000;
+			}
+		}
+	</style>
+</head>
+<body>
+
+<header>
+	<h1>Production-Ready Feature Checklist</h1>
+	<p class="subtitle">Comprehensive guide for shipping features with confidence</p>
+</header>
+
+<div class="controls">
+	<div style="flex: 1 1 100%; display: flex; gap: 1rem; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem; margin-bottom: 0.5rem; justify-content: center;">
+		<strong>Templates:</strong>
+		<button onclick="applyTemplate('dev')" style="background: #27ae60;">🔧 Dev</button>
+		<button onclick="applyTemplate('mvp')" style="background: #f39c12;">🚀 MVP</button>
+		<button onclick="applyTemplate('prod')" style="background: #c0392b;">✅ Production</button>
+		<button onclick="applyTemplate('custom')" style="background: #8e44ad;">⚙️ Custom</button>
+	</div>
+	<button onclick="expandAll(true)">Expand All</button>
+	<button onclick="expandAll(false)">Collapse All</button>
+	<button onclick="uncheckAll()">Uncheck All</button>
+	<button onclick="window.print()">🖨️ Print</button>
+</div>
+
+<main>
+	<!-- Functionality & Requirements -->
+	<details class="card" data-section="functionality">
+		<summary>
+			<span>Functionality & Requirements</span>
+		</summary>
+		<fieldset>
+			<legend>Core Functionality</legend>
+			<label><input type="checkbox"> Feature works as specified in requirements/tickets</label>
+			<label><input type="checkbox"> All acceptance criteria met</label>
+			<label><input type="checkbox"> Happy path flows end-to-end</label>
+			<label><input type="checkbox"> Feature behaves correctly across all supported platforms/browsers (if applicable)</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Edge Cases & Boundary Conditions</legend>
+			<label><input type="checkbox"> <strong>Empty/null/undefined inputs</strong> - What happens with missing data?</label>
+			<label><input type="checkbox"> <strong>Zero values</strong> - Does 0, 0.0, empty array [], empty string "" break anything?</label>
+			<label><input type="checkbox"> <strong>Negative numbers</strong> - If numeric input, are negatives handled?</label>
+			<label><input type="checkbox"> <strong>Very large values</strong> - Max integer, long strings, huge arrays</label>
+			<label><input type="checkbox"> <strong>Very small values</strong> - Decimal precision, rounding issues</label>
+			<label><input type="checkbox"> <strong>Special characters</strong> - Unicode, emojis, SQL/HTML characters in text</label>
+			<label><input type="checkbox"> <strong>Whitespace</strong> - Leading/trailing spaces, tabs, newlines</label>
+			<label><input type="checkbox"> <strong>Duplicate data</strong> - Same item added twice, concurrent submissions</label>
+			<label><input type="checkbox"> <strong>Out-of-order operations</strong> - What if steps happen in wrong sequence?</label>
+			<label><input type="checkbox"> <strong>Stale data</strong> - Cached or outdated information</label>
+			<label><input type="checkbox"> <strong>Concurrent operations</strong> - Multiple users/processes modifying same data</label>
+			<label><input type="checkbox"> <strong>Timezone handling</strong> - If dates/times involved, tested across timezones?</label>
+			<label><input type="checkbox"> <strong>Deleted/archived dependencies</strong> - References to deleted users, posts, etc.</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Error States</legend>
+			<label><input type="checkbox"> Network failures handled gracefully</label>
+			<label><input type="checkbox"> Timeout scenarios covered</label>
+			<label><input type="checkbox"> Third-party service failures don't break the app</label>
+			<label><input type="checkbox"> Database connection issues handled</label>
+			<label><input type="checkbox"> Partial failures handled (e.g., batch operations)</label>
+			<label><input type="checkbox"> User sees helpful error messages, not stack traces</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>User Feedback</legend>
+			<label><input type="checkbox"> Loading states for async operations</label>
+			<label><input type="checkbox"> Success confirmations</label>
+			<label><input type="checkbox"> Error messages are actionable ("Try again" vs "Contact support")</label>
+			<label><input type="checkbox"> Progress indicators for long operations</label>
+			<label><input type="checkbox"> Validation errors clearly shown</label>
+		</fieldset>
+	</details>
+
+	<!-- Code Quality -->
+	<details class="card" data-section="code-quality">
+		<summary>
+			<span>Code Quality</span>
+		</summary>
+		<fieldset>
+			<legend>Readability & Maintainability</legend>
+			<label><input type="checkbox"> Code is self-documenting with clear variable/function names</label>
+			<label><input type="checkbox"> Complex logic has explanatory comments</label>
+			<label><input type="checkbox"> Functions are single-purpose and reasonably sized (&lt;50 lines ideal)</label>
+			<label><input type="checkbox"> No "magic numbers" - use named constants</label>
+			<label><input type="checkbox"> DRY principle followed (no unnecessary duplication)</label>
+			<label><input type="checkbox"> Consistent formatting (linter passes)</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Configuration & Environment</legend>
+			<label><input type="checkbox"> No hardcoded values (URLs, API keys, thresholds)</label>
+			<label><input type="checkbox"> Environment variables used for config</label>
+			<label><input type="checkbox"> Different configs for dev/staging/prod</label>
+			<label><input type="checkbox"> Secrets never committed to repo</label>
+			<label><input type="checkbox"> Feature flags used if needed for gradual rollout</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Error Handling</legend>
+			<label><input type="checkbox"> All external calls wrapped in try/catch (or equivalent)</label>
+			<label><input type="checkbox"> Errors logged with sufficient context</label>
+			<label><input type="checkbox"> Errors don't expose sensitive information</label>
+			<label><input type="checkbox"> Fallback behaviors defined</label>
+			<label><input type="checkbox"> Errors propagate or are handled at appropriate level</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Performance Considerations</legend>
+			<label><input type="checkbox"> No obvious O(n²) or worse algorithms where avoidable</label>
+			<label><input type="checkbox"> Database queries optimized (see Performance section)</label>
+			<label><input type="checkbox"> Large files/data streamed not loaded into memory</label>
+			<label><input type="checkbox"> Infinite loops impossible</label>
+			<label><input type="checkbox"> Resource cleanup (close connections, files, streams)</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Dependencies</legend>
+			<label><input type="checkbox"> New dependencies necessary and vetted (license, maintenance, size)</label>
+			<label><input type="checkbox"> Dependencies pinned to specific versions</label>
+			<label><input type="checkbox"> No known vulnerabilities (security scan passed)</label>
+		</fieldset>
+	</details>
+
+	<!-- Testing -->
+	<details class="card" data-section="testing">
+		<summary>
+			<span>Testing</span>
+		</summary>
+		<fieldset>
+			<legend>Unit Tests</legend>
+			<label><input type="checkbox"> Happy path covered</label>
+			<label><input type="checkbox"> Edge cases tested (null, empty, boundary values)</label>
+			<label><input type="checkbox"> Error conditions tested (exceptions, invalid input)</label>
+			<label><input type="checkbox"> Mocking used appropriately for external dependencies</label>
+			<label><input type="checkbox"> Test names describe what they test</label>
+			<label><input type="checkbox"> Tests are deterministic (no flaky tests)</label>
+			<label><input type="checkbox"> Fast execution (&lt;5 seconds for unit suite)</label>
+			<label><input type="checkbox"> Code coverage meets team standards (typically 70-80%+)</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Integration Tests</legend>
+			<label><input type="checkbox"> Feature works end-to-end in test environment</label>
+			<label><input type="checkbox"> Database transactions work correctly</label>
+			<label><input type="checkbox"> External API integrations tested (or mocked appropriately)</label>
+			<label><input type="checkbox"> Authentication/authorization flows work</label>
+			<label><input type="checkbox"> Multi-step workflows complete successfully</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Manual Testing</legend>
+			<label><input type="checkbox"> Tested in browser/app on your machine</label>
+			<label><input type="checkbox"> Tested in staging/pre-prod environment</label>
+			<label><input type="checkbox"> Tested on different devices/screen sizes (if UI)</label>
+			<label><input type="checkbox"> Tested with real-ish data (not just test@test.com)</label>
+			<label><input type="checkbox"> Tested while logged in as different user roles</label>
+			<label><input type="checkbox"> Tested both with and without feature flags enabled</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Regression Testing</legend>
+			<label><input type="checkbox"> Existing tests still pass</label>
+			<label><input type="checkbox"> Related features still work</label>
+			<label><input type="checkbox"> No unexpected side effects in other parts of the system</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Common Test Scenarios</legend>
+			<label><input type="checkbox"> Empty state - First time user, no data yet</label>
+			<label><input type="checkbox"> Pagination - First page, last page, page boundaries</label>
+			<label><input type="checkbox"> Permissions - Unauthorized user can't access</label>
+			<label><input type="checkbox"> Rate limiting - Excessive requests handled</label>
+			<label><input type="checkbox"> Idempotency - Same request twice produces same result</label>
+		</fieldset>
+	</details>
+
+	<!-- Security -->
+	<details class="card" data-section="security">
+		<summary>
+			<span>Security</span>
+		</summary>
+		<fieldset>
+			<legend>Input Validation</legend>
+			<label><input type="checkbox"> All user input validated (type, format, range)</label>
+			<label><input type="checkbox"> Server-side validation (never trust client)</label>
+			<label><input type="checkbox"> Whitelist approach preferred over blacklist</label>
+			<label><input type="checkbox"> File uploads: type, size, content validation</label>
+			<label><input type="checkbox"> Max length checks on text inputs</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Injection Prevention</legend>
+			<label><input type="checkbox"> <strong>SQL Injection</strong> - Parameterized queries/ORMs used, no string concatenation</label>
+			<label><input type="checkbox"> <strong>XSS</strong> - User input escaped/sanitized before display</label>
+			<label><input type="checkbox"> <strong>Command Injection</strong> - No unsanitized input to shell commands</label>
+			<label><input type="checkbox"> <strong>Path Traversal</strong> - File paths validated, no ../ attacks</label>
+			<label><input type="checkbox"> <strong>LDAP/XML/etc Injection</strong> - Context-specific escaping</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Authentication & Authorization</legend>
+			<label><input type="checkbox"> Authentication required where needed</label>
+			<label><input type="checkbox"> Authorization checks on all endpoints (not just UI)</label>
+			<label><input type="checkbox"> User can only access their own resources</label>
+			<label><input type="checkbox"> Role-based access control works correctly</label>
+			<label><input type="checkbox"> Admin-only features properly gated</label>
+			<label><input type="checkbox"> Token/session expiration handled</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Data Protection</legend>
+			<label><input type="checkbox"> Sensitive data encrypted at rest (if applicable)</label>
+			<label><input type="checkbox"> Sensitive data encrypted in transit (HTTPS)</label>
+			<label><input type="checkbox"> PII/PHI handled per compliance requirements (GDPR, HIPAA, etc.)</label>
+			<label><input type="checkbox"> Passwords hashed with strong algorithm (bcrypt, argon2)</label>
+			<label><input type="checkbox"> API keys/tokens not logged or exposed</label>
+			<label><input type="checkbox"> No sensitive data in URLs (use POST body)</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Common Vulnerabilities (OWASP Top 10)</legend>
+			<label><input type="checkbox"> <strong>CSRF</strong> - Tokens used for state-changing operations</label>
+			<label><input type="checkbox"> <strong>Open Redirects</strong> - Redirect URLs validated</label>
+			<label><input type="checkbox"> <strong>SSRF</strong> - User-provided URLs validated</label>
+			<label><input type="checkbox"> <strong>Mass Assignment</strong> - Only allowed fields can be updated</label>
+			<label><input type="checkbox"> <strong>Insecure Deserialization</strong> - Don't deserialize untrusted data</label>
+			<label><input type="checkbox"> <strong>Dependency vulnerabilities</strong> - Security scan passed</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>API Security (if applicable)</legend>
+			<label><input type="checkbox"> Rate limiting implemented</label>
+			<label><input type="checkbox"> API keys/tokens validated</label>
+			<label><input type="checkbox"> CORS configured correctly</label>
+			<label><input type="checkbox"> GraphQL: depth/complexity limiting (if applicable)</label>
+		</fieldset>
+	</details>
+
+	<!-- Observability -->
+	<details class="card" data-section="observability">
+		<summary>
+			<span>Observability</span>
+		</summary>
+		<fieldset>
+			<legend>Logging</legend>
+			<label><input type="checkbox"> Key operations logged (create, update, delete)</label>
+			<label><input type="checkbox"> Errors logged with stack traces</label>
+			<label><input type="checkbox"> Logs include context (user ID, request ID, timestamp)</label>
+			<label><input type="checkbox"> Log levels used appropriately (DEBUG, INFO, WARN, ERROR)</label>
+			<label><input type="checkbox"> No sensitive data in logs (passwords, tokens, PII)</label>
+			<label><input type="checkbox"> Structured logging used (JSON format preferred)</label>
+			<label><input type="checkbox"> Request IDs for tracing requests across services</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Metrics & Monitoring</legend>
+			<label><input type="checkbox"> Key performance indicators tracked (latency, throughput)</label>
+			<label><input type="checkbox"> Error rates monitored</label>
+			<label><input type="checkbox"> Business metrics tracked if applicable (signups, conversions)</label>
+			<label><input type="checkbox"> Dashboards created for key metrics</label>
+			<label><input type="checkbox"> Database query performance tracked</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Alerting</legend>
+			<label><input type="checkbox"> Alerts configured for critical errors</label>
+			<label><input type="checkbox"> Alert thresholds set appropriately</label>
+			<label><input type="checkbox"> On-call team knows how to respond to alerts</label>
+			<label><input type="checkbox"> Alert fatigue avoided (not too noisy)</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Debugging Capabilities</legend>
+			<label><input type="checkbox"> Can reproduce issues from logs alone</label>
+			<label><input type="checkbox"> Can trace request through system</label>
+			<label><input type="checkbox"> Can identify which deployment introduced issue</label>
+			<label><input type="checkbox"> Have access to production logs (with proper security)</label>
+		</fieldset>
+	</details>
+
+	<!-- Performance -->
+	<details class="card" data-section="performance">
+		<summary>
+			<span>Performance</span>
+		</summary>
+		<fieldset>
+			<legend>Database Optimization</legend>
+			<label><input type="checkbox"> Indexes created for frequently queried columns</label>
+			<label><input type="checkbox"> N+1 queries eliminated (use eager loading, joins)</label>
+			<label><input type="checkbox"> Query complexity - No cartesian products, efficient joins</label>
+			<label><input type="checkbox"> Pagination implemented for large result sets</label>
+			<label><input type="checkbox"> Connection pooling configured</label>
+			<label><input type="checkbox"> Transactions scoped appropriately (not too large)</label>
+			<label><input type="checkbox"> Batch operations used where applicable</label>
+			<label><input type="checkbox"> EXPLAIN analysis done on complex queries</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Caching Strategy</legend>
+			<label><input type="checkbox"> Cache frequently accessed, infrequently changed data</label>
+			<label><input type="checkbox"> Cache invalidation strategy defined</label>
+			<label><input type="checkbox"> Cache TTL set appropriately</label>
+			<label><input type="checkbox"> Cache hit/miss rates monitored</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>API Performance</legend>
+			<label><input type="checkbox"> Response times under acceptable threshold (&lt;200ms ideal, &lt;1s acceptable)</label>
+			<label><input type="checkbox"> Timeouts configured for external calls</label>
+			<label><input type="checkbox"> Retry logic with exponential backoff</label>
+			<label><input type="checkbox"> Circuit breakers for failing dependencies</label>
+			<label><input type="checkbox"> Compression enabled (gzip/brotli)</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Load Testing (if applicable)</legend>
+			<label><input type="checkbox"> Expected load tested (concurrent users, requests/second)</label>
+			<label><input type="checkbox"> Peak load tested (2-3x expected)</label>
+			<label><input type="checkbox"> Resource usage acceptable (CPU, memory, disk)</label>
+			<label><input type="checkbox"> No memory leaks over extended runs</label>
+			<label><input type="checkbox"> Degradation graceful under overload</label>
+		</fieldset>
+	</details>
+
+	<!-- Documentation -->
+	<details class="card" data-section="documentation">
+		<summary>
+			<span>Documentation</span>
+		</summary>
+		<fieldset>
+			<legend>Code Documentation</legend>
+			<label><input type="checkbox"> Complex algorithms explained</label>
+			<label><input type="checkbox"> Non-obvious decisions documented</label>
+			<label><input type="checkbox"> Public APIs documented (parameters, returns, errors)</label>
+			<label><input type="checkbox"> Architecture diagrams if complex</label>
+			<label><input type="checkbox"> "Why" explained, not just "what"</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>API Documentation (if applicable)</legend>
+			<label><input type="checkbox"> Endpoints documented (REST/GraphQL schema)</label>
+			<label><input type="checkbox"> Request/response examples provided</label>
+			<label><input type="checkbox"> Authentication requirements specified</label>
+			<label><input type="checkbox"> Rate limits documented</label>
+			<label><input type="checkbox"> Error codes and meanings listed</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Operational Documentation</legend>
+			<label><input type="checkbox"> README updated with setup instructions</label>
+			<label><input type="checkbox"> Environment variables documented</label>
+			<label><input type="checkbox"> Configuration options explained</label>
+			<label><input type="checkbox"> Troubleshooting guide (common issues)</label>
+			<label><input type="checkbox"> Runbook for deployments</label>
+			<label><input type="checkbox"> Rollback procedures documented</label>
+		</fieldset>
+	</details>
+
+	<!-- Deployment Readiness -->
+	<details class="card" data-section="deployment">
+		<summary>
+			<span>Deployment Readiness</span>
+		</summary>
+		<fieldset>
+			<legend>Database Migrations</legend>
+			<label><input type="checkbox"> Migrations tested in dev/staging</label>
+			<label><input type="checkbox"> Migrations are reversible (down migrations)</label>
+			<label><input type="checkbox"> Migrations are idempotent (can run multiple times)</label>
+			<label><input type="checkbox"> Large data migrations run in batches</label>
+			<label><input type="checkbox"> Migrations don't lock tables for long periods</label>
+			<label><input type="checkbox"> Backup taken before migration</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Feature Flags (if applicable)</legend>
+			<label><input type="checkbox"> Flag names descriptive and documented</label>
+			<label><input type="checkbox"> Default state is safe (usually OFF)</label>
+			<label><input type="checkbox"> Can toggle flag without deployment</label>
+			<label><input type="checkbox"> Can target specific users/segments</label>
+			<label><input type="checkbox"> Cleanup plan for removing flag</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Configuration</legend>
+			<label><input type="checkbox"> Environment variables set in all environments</label>
+			<label><input type="checkbox"> Config changes don't require code deployment</label>
+			<label><input type="checkbox"> Secrets rotated if needed</label>
+			<label><input type="checkbox"> External service credentials configured</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Rollback Plan</legend>
+			<label><input type="checkbox"> Can rollback code deployment quickly</label>
+			<label><input type="checkbox"> Can rollback database changes</label>
+			<label><input type="checkbox"> Data loss acceptable or prevented</label>
+			<label><input type="checkbox"> Feature flag can disable feature</label>
+			<label><input type="checkbox"> Rollback tested in staging</label>
+		</fieldset>
+	</details>
+
+	<!-- Pre-Deploy Checklist -->
+	<details class="card" data-section="pre-deploy">
+		<summary>
+			<span>Pre-Deploy Checklist</span>
+		</summary>
+		<fieldset>
+			<legend>Day Of Deployment</legend>
+			<label><input type="checkbox"> All tests passing in CI</label>
+			<label><input type="checkbox"> Staging environment working</label>
+			<label><input type="checkbox"> Code reviewed and merged</label>
+			<label><input type="checkbox"> Database migrations ready</label>
+			<label><input type="checkbox"> Configuration in place</label>
+			<label><input type="checkbox"> Feature flags configured</label>
+			<label><input type="checkbox"> Monitoring/alerts active</label>
+			<label><input type="checkbox"> Team available for support</label>
+			<label><input type="checkbox"> Rollback plan ready</label>
+			<label><input type="checkbox"> Communication sent</label>
+		</fieldset>
+	</details>
+
+	<!-- Post-Deploy Checklist -->
+	<details class="card" data-section="post-deploy">
+		<summary>
+			<span>Post-Deploy Checklist</span>
+		</summary>
+		<fieldset>
+			<legend>First 48 Hours</legend>
+			<label><input type="checkbox"> Smoke tests passed</label>
+			<label><input type="checkbox"> Error rates normal</label>
+			<label><input type="checkbox"> Performance metrics normal</label>
+			<label><input type="checkbox"> No customer complaints</label>
+			<label><input type="checkbox"> Monitoring shows healthy metrics</label>
+			<label><input type="checkbox"> Feature flag enabled (if applicable)</label>
+			<label><input type="checkbox"> Team debriefed on any issues</label>
+		</fieldset>
+	</details>
+</main>
+
+<script>
+	// Expand/collapse all details (works on ALL cards, hidden or not)
+	function expandAll(expand) {
+		const cards = document.querySelectorAll('.card');
+		cards.forEach(card => {
+			card.open = expand;
+		});
+	}
+
+	// Uncheck all checkboxes
+	function uncheckAll() {
+		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+		checkboxes.forEach(cb => cb.checked = false);
+	}
+
+	// Template configurations
+	const templates = {
+		dev: {
+			name: 'Development',
+			description: 'Quick iteration - focus on core functionality',
+			sections: ['functionality', 'code-quality', 'testing'],
+			message: '🔧 Dev template applied: Focus on core functionality, basic testing, and code quality',
+			checkPatterns: [
+				// Functionality - Core only
+				/Feature works as specified/i,
+				/Happy path flows/i,
+				/Empty\/null\/undefined/i,
+				/Network failures/i,
+				/Error messages are actionable/i,
+
+				// Code Quality - Basics
+				/self-documenting/i,
+				/Complex logic has explanatory/i,
+				/single-purpose/i,
+				/No hardcoded values/i,
+				/try\/catch/i,
+				/Errors logged/i,
+
+				// Testing - Essential
+				/Happy path.*covered/i,
+				/Edge cases.*tested/i,
+				/Error conditions.*tested/i,
+				/Tested in browser/i
+			]
+		},
+		mvp: {
+			name: 'MVP',
+			description: 'Minimum viable product - essentials for launch',
+			sections: ['functionality', 'code-quality', 'testing', 'security', 'deployment'],
+			message: '🚀 MVP template applied: Core features, security basics, and deployment readiness',
+			checkPatterns: [
+				// Functionality - Most items
+				/Feature works as specified/i,
+				/acceptance criteria/i,
+				/Happy path/i,
+				/Empty\/null\/undefined/i,
+				/Zero values/i,
+				/Special characters/i,
+				/Network failures/i,
+				/Timeout scenarios/i,
+				/Database connection/i,
+				/error messages/i,
+				/Loading states/i,
+				/Success confirmations/i,
+
+				// Code Quality - Most items
+				/self-documenting/i,
+				/Complex logic/i,
+				/single-purpose/i,
+				/magic numbers/i,
+				/DRY principle/i,
+				/linter passes/i,
+				/No hardcoded/i,
+				/Environment variables/i,
+				/Secrets never/i,
+				/try\/catch/i,
+				/Errors logged/i,
+				/Errors don't expose/i,
+
+				// Testing - Core coverage
+				/Happy path.*covered/i,
+				/Edge cases.*tested/i,
+				/Error conditions.*tested/i,
+				/deterministic/i,
+				/end-to-end in test/i,
+				/Database transactions/i,
+				/Tested in browser/i,
+				/Tested in staging/i,
+				/Existing tests still pass/i,
+
+				// Security - Critical items
+				/All user input validated/i,
+				/Server-side validation/i,
+				/SQL Injection/i,
+				/XSS/i,
+				/Authentication required/i,
+				/Authorization checks.*endpoints/i,
+				/User can only access their own/i,
+				/Passwords hashed/i,
+				/HTTPS/i,
+
+				// Deployment - Essentials
+				/Migrations tested/i,
+				/reversible/i,
+				/Environment variables set/i,
+				/Rollback plan ready/i,
+				/Code reviewed/i
+			]
+		},
+		prod: {
+			name: 'Production',
+			description: 'Full production - all systems go',
+			sections: ['functionality', 'code-quality', 'testing', 'security', 'observability', 'performance', 'documentation', 'deployment', 'pre-deploy', 'post-deploy'],
+			message: '✅ Production template applied: Complete checklist for production-ready features',
+			checkPatterns: [
+				// Check almost everything - this is production!
+				/./  // This regex matches any line with content, effectively checking most boxes
+			],
+			checkAll: true  // Special flag to check everything
+		},
+		custom: {
+			name: 'Custom',
+			description: 'Show all sections for manual selection',
+			sections: ['functionality', 'code-quality', 'testing', 'security', 'observability', 'performance', 'documentation', 'deployment', 'pre-deploy', 'post-deploy'],
+			message: '⚙️ Custom mode: All sections shown - customize as needed',
+			checkPatterns: []  // Don't auto-check anything
+		}
+	};
+
+	// Apply template
+	function applyTemplate(templateName) {
+		const template = templates[templateName];
+		if (!template) return;
+
+		// First, uncheck all checkboxes
+		uncheckAll();
+
+		// Show/hide sections based on template
+		const allCards = document.querySelectorAll('.card');
+		allCards.forEach(card => {
+			const section = card.dataset.section;
+			if (template.sections.includes(section)) {
+				card.classList.remove('hidden');
+				card.open = true;
+			} else {
+				card.classList.add('hidden');
+			}
+		});
+
+		// Check boxes based on template patterns
+		if (template.checkAll) {
+			// Production template - check everything in visible sections
+			allCards.forEach(card => {
+				const section = card.dataset.section;
+				if (template.sections.includes(section)) {
+					const checkboxes = card.querySelectorAll('input[type="checkbox"]');
+					checkboxes.forEach(cb => cb.checked = true);
+				}
+			});
+		} else if (template.checkPatterns && template.checkPatterns.length > 0) {
+			// Check boxes matching patterns
+			const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+			allCheckboxes.forEach(checkbox => {
+				const label = checkbox.closest('label');
+				if (label) {
+					const labelText = label.textContent;
+					// Check if any pattern matches this label
+					const matches = template.checkPatterns.some(pattern => pattern.test(labelText));
+					if (matches) {
+						checkbox.checked = true;
+					}
+				}
+			});
+		}
+
+		// Show notification
+		showNotification(template.message);
+	}
+
+	// Show notification
+	function showNotification(message) {
+		// Remove existing notification
+		const existing = document.querySelector('.notification');
+		if (existing) existing.remove();
+
+		// Create notification
+		const notification = document.createElement('div');
+		notification.className = 'notification';
+		notification.textContent = message;
+		notification.style.cssText = `
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			background: #2c3e50;
+			color: white;
+			padding: 1rem 1.5rem;
+			border-radius: 8px;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+			z-index: 1000;
+			animation: slideIn 0.3s ease-out;
+		`;
+
+		// Add animation
+		const style = document.createElement('style');
+		style.textContent = `
+			@keyframes slideIn {
+				from {
+					transform: translateX(400px);
+					opacity: 0;
+				}
+				to {
+					transform: translateX(0);
+					opacity: 1;
+				}
+			}
+		`;
+		document.head.appendChild(style);
+
+		document.body.appendChild(notification);
+
+		// Remove after 3 seconds
+		setTimeout(() => {
+			notification.style.opacity = '0';
+			notification.style.transition = 'opacity 0.3s';
+			setTimeout(() => notification.remove(), 300);
+		}, 3000);
+	}
+</script>
+
+</body>
+</html>
